@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface ImageWithLoadingProps {
@@ -13,6 +13,44 @@ interface ImageWithLoadingProps {
 export default function ImageWithLoading({ src, alt, className = '', onLoad }: ImageWithLoadingProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    // Reset loading state when src changes
+    setIsLoading(true);
+    setHasError(false);
+
+    // Set a timeout as a fallback - if image doesn't load in 10 seconds, force check
+    timeoutRef.current = setTimeout(() => {
+      if (imgRef.current?.complete && imgRef.current?.naturalHeight > 0) {
+        // Image is actually loaded but event didn't fire
+        setIsLoading(false);
+      }
+    }, 10000);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [src]);
+
+  const handleLoad = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsLoading(false);
+    onLoad?.();
+  };
+
+  const handleError = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsLoading(false);
+    setHasError(true);
+  };
 
   return (
     <div className="relative w-full h-full">
@@ -29,18 +67,12 @@ export default function ImageWithLoading({ src, alt, className = '', onLoad }: I
         </div>
       )}
       <motion.img
+        ref={imgRef}
         src={src}
         alt={alt}
         className={`${className} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-        onLoad={() => {
-          setIsLoading(false);
-          onLoad?.();
-        }}
-        onError={() => {
-          setIsLoading(false);
-          setHasError(true);
-        }}
-        loading="lazy"
+        onLoad={handleLoad}
+        onError={handleError}
       />
     </div>
   );
