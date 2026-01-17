@@ -63,12 +63,30 @@ export default function StickerCard({ sticker, onClick, isSelected = false, onTo
     try {
       const response = await fetch(sticker.url);
       const blob = await response.blob();
-      await navigator.clipboard.write([
-        new ClipboardItem({ [blob.type]: blob })
-      ]);
-      onToast?.('Copied!', 'success');
+
+      const canWriteImages = typeof navigator.clipboard?.write === 'function' && typeof ClipboardItem !== 'undefined';
+
+      if (canWriteImages) {
+        try {
+          await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+          onToast?.('Copied image!', 'success');
+          return;
+        } catch (err) {
+          // Some browsers reject image/gif; fall back to copying the link.
+        }
+      }
+
+      const absoluteUrl = new URL(sticker.url, window.location.href).href;
+      await navigator.clipboard.writeText(absoluteUrl);
+      onToast?.('Copied link!', 'success');
     } catch (error) {
-      onToast?.('Copy failed', 'error');
+      try {
+        const absoluteUrl = new URL(sticker.url, window.location.href).href;
+        await navigator.clipboard.writeText(absoluteUrl);
+        onToast?.('Copied link!', 'success');
+      } catch (fallbackError) {
+        onToast?.('Copy failed', 'error');
+      }
     }
   };
 

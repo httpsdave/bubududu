@@ -15,7 +15,7 @@ export default function ExportFavoritesButton({ onExport, favoritesCount }: Expo
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       onClick={onExport}
-      className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600 rounded-lg transition-all text-sm font-medium shadow-md hover:shadow-lg"
+      className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-pink-500 text-white hover:bg-pink-600 rounded-lg transition-all text-sm font-medium shadow-md hover:shadow-lg"
       title={`Download all ${favoritesCount} favorites`}
     >
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
