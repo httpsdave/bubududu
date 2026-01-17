@@ -256,7 +256,7 @@ export default function Home() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSelecting]);
+  }, [isSelecting, clearSelection, handleSelectAll, handleRandomSticker, selectedIds.length, setSelecting]);
 
   return (
     <main className="min-h-screen pb-20 bg-background dark:bg-gray-900 transition-colors">

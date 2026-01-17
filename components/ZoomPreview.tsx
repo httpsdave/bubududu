@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -47,10 +48,13 @@ export default function ZoomPreview({ src, alt, children }: ZoomPreviewProps) {
           }}
         >
           <div className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow-2xl border-2 border-primary">
-            <img
+            <Image
               src={src}
               alt={alt}
+              width={128}
+              height={128}
               className="w-32 h-32 object-contain"
+              sizes="128px"
             />
           </div>
         </motion.div>

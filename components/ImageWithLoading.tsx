@@ -14,7 +14,7 @@ export default function ImageWithLoading({ src, alt, className = '', onLoad }: I
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     // Reset loading state when src changes
@@ -32,6 +32,7 @@ export default function ImageWithLoading({ src, alt, className = '', onLoad }: I
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
       }
     };
   }, [src]);
@@ -39,6 +40,7 @@ export default function ImageWithLoading({ src, alt, className = '', onLoad }: I
   const handleLoad = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
     setIsLoading(false);
     onLoad?.();
@@ -47,6 +49,7 @@ export default function ImageWithLoading({ src, alt, className = '', onLoad }: I
   const handleError = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
     setIsLoading(false);
     setHasError(true);

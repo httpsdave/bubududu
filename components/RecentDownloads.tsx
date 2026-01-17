@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDownloadHistory } from '@/lib/download-history';
@@ -54,7 +55,13 @@ export default function RecentDownloads({ onStickerClick }: RecentDownloadsProps
                   }}
                   className="w-full flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors text-left"
                 >
-                  <img src={sticker!.url} alt={sticker!.name} className="w-10 h-10 object-contain bg-gray-100 dark:bg-gray-700 rounded" />
+                  <Image
+                    src={sticker!.url}
+                    alt={sticker!.name}
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 object-contain bg-gray-100 dark:bg-gray-700 rounded"
+                  />
                   <span className="text-sm text-gray-700 dark:text-gray-200 truncate flex-1">{sticker!.name}</span>
                 </button>
               ))}

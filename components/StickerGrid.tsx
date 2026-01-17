@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useMemo, useEffect } from 'react';
 import StickerCard from './StickerCard';
 import SearchBar from './SearchBar';
@@ -275,10 +276,13 @@ function StickerModal({ sticker, onClose, onToast }: { sticker: Sticker; onClose
         </div>
         
         <div className="bg-gray-50 rounded-xl p-4 mb-4 flex items-center justify-center">
-          <img
+          <Image
             src={sticker.url}
             alt={sticker.name}
+            width={320}
+            height={320}
             className="max-w-full h-auto max-h-64 object-contain"
+            sizes="(max-width: 768px) 70vw, 320px"
           />
         </div>
 
