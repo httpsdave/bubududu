@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useFavoritesStore } from '@/lib/store';
 import { useTheme } from '@/lib/theme';
 import { useBulkSelect } from '@/lib/bulk-select';
@@ -26,11 +27,17 @@ export default function Header({ onShowFavorites, showingFavorites, onShowShortc
   return (
     <header className="sticky top-0 z-50 bg-primary shadow-md mb-4 sm:mb-6">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="flex items-center justify-between h-14 sm:h-20">
+        <div className="flex items-center justify-between h-16 sm:h-24">
           <div className="flex items-center gap-2 sm:gap-3">
-            <h1 className="text-lg sm:text-2xl font-bold text-white">
-              BubuDudu
-            </h1>
+            <Image
+              src="/bubududu-logo.png"
+              alt="BubuDudu logo"
+              width={64}
+              height={64}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/10 object-contain"
+              priority
+            />
+            <h1 className="text-lg sm:text-2xl font-bold text-white">BubuDudu</h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <button
